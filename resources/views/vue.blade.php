@@ -10,9 +10,26 @@
    
 </head>
 <body>
+
+    @if(Auth::check())
+    <script>
+        window.laravel = {!!json_encode([
+            'isLoggedIn' => true,
+            'user' => Auth::user(),
+            'token' => session('token')
+        ]) !!}
+    </script>
+    @else
+    <script>
+        window.laravel = {!!json_encode([
+            'isLoggedIn' => false,
+        ]) !!}
+    </script>
+    @endif
     <div class="container mx-auto">
         <div id="app"></div>
     </div>
- 
+    
+  
 </body>
 </html>

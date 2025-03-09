@@ -103,9 +103,14 @@ export default {
             this.listPage();
         },
         listPage() {
-
+            const config = {
+                headers: {
+                Authorization: `Bearer ${this.$root.token}`
+            }
+            }
+          
             this.isLoading = true;
-            this.$axios.get('/api/categories?page=' + this.currentPage).then((res) => {
+            this.$axios.get('/api/categories?page=' + this.currentPage, config).then((res) => {
                 this.categories = {
                     data: res.data.data,
                     total: res.data.total,
@@ -134,6 +139,7 @@ export default {
                     text: 'Categoria eliminada con éxito',
                     color: 'success'
                 };
+                
             } catch (error) {
                 console.error('Error al eliminar la categoría:', error);
                 this.snackbar = {

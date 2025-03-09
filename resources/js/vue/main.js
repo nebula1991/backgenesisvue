@@ -3,6 +3,8 @@ import { createApp } from 'vue'
 import '../../css/vue.css'
 import '@mdi/font/css/materialdesignicons.min.css'
 
+import VueCookies from 'vue3-cookies'
+
 // Vuetify
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
@@ -24,7 +26,7 @@ const vuetify = createVuetify({
 
 
 const app = createApp(App)
-app.use(vuetify).use(router)
+app.use(vuetify).use(router).use(VueCookies)
 
 app.config.globalProperties.$axios = axios
 window.axios = axios
