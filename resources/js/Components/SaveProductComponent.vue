@@ -276,7 +276,7 @@ export default {
              catch (error) {
                 console.error('Error cargando producto:', error);
                 if (error.response?.status === 404) {
-                    this.$router.push('/vue/products'); // Redirigir si no se encuentra
+                    this.$router.push('/products'); // Redirigir si no se encuentra
                 }
             
             
@@ -383,7 +383,7 @@ export default {
              // Only navigate after delay
              setTimeout(() => {
                  this.resetForm();
-                 this.$router.push('/vue/products');
+                 this.$router.push('/products');
              }, 2000);
           
             } catch (error) {

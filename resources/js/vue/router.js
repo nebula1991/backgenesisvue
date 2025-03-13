@@ -5,61 +5,72 @@ const {cookies} = useCookies()
 
 //Importar componentes
 
+
 import Login from "../Pages/Auth/Login.vue";
 import Dashboard from "../Pages/Dashboard.vue";
 import CategoryList from "../Pages/CategoryList.vue";
 import SaveProduct from '../Components/SaveProductComponent.vue';
 import ProductList from "../Pages/ProductList.vue";
+import SupplierList from "../Pages/SupplierList.vue";
 import SaveCategory from "../Components/SaveCategory.vue";
 import SubcategoryList from "../Pages/SubcategoryList.vue";
 import SaveSubcategory from "../Components/SaveSubcategory.vue";
+import SaveSupplier from "../Components/SaveSupplier.vue";
 
 
 
 
     const routes = [
-
-
         {
             name: "login",
-            path: "/vue/login",
+            path: "/login",
             component: Login,
         },
         {
             name: "dashboard",
-            path: "/vue/dashboard",
+            path: "/dashboard",
             component: Dashboard,
         },
   
         {
             name: "categories",
-            path: "/vue/categories",
+            path: "/categories",
             component: CategoryList
         },
         {
             name: "saveCategory",
-            path: "/vue/saveCategory/:id?",
+            path: "/saveCategory/:id?",
             component: SaveCategory
         },
         {
             name: "subcategories",
-            path: "/vue/subcategories",
+            path: "/subcategories",
             component: SubcategoryList
         },
         {
             name: "saveSubcategory",
-            path: "/vue/saveSubcategory/:id?",
+            path: "/saveSubcategory/:id?",
             component: SaveSubcategory
         },
         {
             name: "products",
-            path: "/vue/products",
+            path: "/products",
             component: ProductList
         },
         {
             name: "saveProduct",
-            path: "/vue/saveProduct/:id?",
+            path: "/saveProduct/:id?",
             component: SaveProduct
+        },
+        {
+            name: "suppliers",
+            path: "/suppliers",
+            component: SupplierList
+        },
+        {
+            name: "saveSupplier",
+            path: "/saveSupplier/:id?",
+            component: SaveSupplier
         },
         
     

@@ -22,9 +22,7 @@ const vuetify = createVuetify({
     components,
     directives,
   })
-
-
-
+  
 const app = createApp(App)
 app.use(vuetify).use(router).use(VueCookies)
 

@@ -21,6 +21,15 @@
             <template v-slot:item.index="{ index }">
                 {{ (currentPage - 1) * products.per_page + index + 1 }}
             </template>
+            <template v-slot:item.stock="{ item }">
+                <span :class="{
+                    'text-success': item.stock > 10,
+                    'text-warning': item.stock > 0 && item.stock <= 10,
+                    'text-error': item.stock === 0
+                }">
+                    {{ item.stock }}
+                </span>
+            </template>
             <template v-slot:item.price="{ item }">
                 {{ item.price }}€
             </template>
@@ -133,6 +142,11 @@ import DeleteDialog from '../Components/DeleteDialog.vue';
                     console.log(this.currentPage)
                 },
                 listPage(){
+                    const config = {
+                headers: {
+                Authorization: `Bearer ${this.$root.token}`
+                }
+                }
                     this.isLoading = true;
                         this.$axios.get('/api/products?page='+this.currentPage).then((res) => {
                             this.products = { 

@@ -121,7 +121,7 @@ export default{
          } catch (error) {
              console.error('Error cargando subcategoria:', error);
              if (error.response?.status === 404) {
-                 this.$router.push('/vue/subcategories'); // Redirigir si no se encuentra
+                 this.$router.push('/subcategories'); // Redirigir si no se encuentra
              }
          }
      },
@@ -163,7 +163,7 @@ export default{
              // Only navigate after delay
              setTimeout(() => {
                  this.resetForm();
-                 this.$router.push('/vue/subcategories');
+                 this.$router.push('/subcategories');
              }, 2000);
 
          } catch (error){

@@ -3,15 +3,18 @@
        <!-- Top Navigation Bar -->
        <v-app-bar color="#263238">
             <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-            <v-toolbar-title>BackGenesis</v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-toolbar-title class="text-center text-h5">BackGenesis</v-toolbar-title>
             <v-spacer></v-spacer>
 
             <template v-if="isLoggedIn">
                  <v-menu location="bottom end">
                   <template  v-slot:activator="{ props }">
                     <v-btn icon v-bind="props">
+                     
                         <v-avatar color="grey-darken-1">
-                            <v-icon icon="mdi-account"></v-icon>
+                             <!-- <v-icon icon="mdi-account"></v-icon> -->
+                            <span class="text-h6 text-white">{{ getUserInitials }}</span>
                         </v-avatar>
                     </v-btn>
                   </template>
@@ -34,9 +37,9 @@
 
               <template v-else>
                 <v-btn
-                    color="primary"
+                    color="warning"
                     variant="text"
-                    to="/vue/login"
+                    to="/login"
                 >
                     Iniciar Sesión
                 </v-btn>
@@ -48,32 +51,39 @@
 
             <v-list>
 
-              <v-list-item to="/vue/dashboard" active-color="primary">
+              <v-list-item to="/dashboard" active-color="primary">
                 <template v-slot:prepend>
                   <v-icon>mdi-view-dashboard</v-icon>
                 </template>
                 <v-list-item-title>Dashboard</v-list-item-title>
               </v-list-item>
       
-              <v-list-item to="/vue/categories" active-color="primary">
+              <v-list-item to="/categories" active-color="primary">
                 <template v-slot:prepend>
                   <v-icon>mdi-shape</v-icon>
                 </template>
                 <v-list-item-title>Categorías</v-list-item-title>
               </v-list-item>
       
-              <v-list-item to="/vue/subcategories" active-color="primary">
+              <v-list-item to="/subcategories" active-color="primary">
                 <template v-slot:prepend>
                   <v-icon>mdi-shape-outline</v-icon>
                 </template>
                 <v-list-item-title>Subcategorías</v-list-item-title>
               </v-list-item>
       
-              <v-list-item to="/vue/products" active-color="primary">
+              <v-list-item to="/products" active-color="primary">
                 <template v-slot:prepend>
                   <v-icon>mdi-package-variant-closed</v-icon>
                 </template>
                 <v-list-item-title>Productos</v-list-item-title>
+              </v-list-item>
+
+              <v-list-item to="/suppliers" active-color="primary">
+                <template v-slot:prepend>
+                  <v-icon>mdi-package-variant-closed</v-icon>
+                </template>
+                <v-list-item-title>Proveedores</v-list-item-title>
               </v-list-item>
             </v-list>
           </v-navigation-drawer>
@@ -120,7 +130,7 @@ export default {
         }).catch(()=>{
           console.log('Token inválido, cerrando sesión...');
           this.setCookieAuth(null);
-          window.location.href = '/vue/login';
+          window.location.href = '/login';
         })
 
       }else {
@@ -174,7 +184,20 @@ export default {
             this.$router.push({ name: 'login' });
           })
         }
-      }
+      },
+      computed: {
+        getUserInitials() {
+            if (!this.user?.name) return '?';
+            return this.user.name
+                .split(' ')
+                .map(word => word[0])
+                .join('')
+                .toUpperCase()
+                .substring(0, 2);
+        }
+    },
  
 }
 </script>
+
+

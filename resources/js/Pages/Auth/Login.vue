@@ -138,7 +138,7 @@ export default{
 
                     setTimeout(() => {
                     // this.$router.push({ name: 'dashboard' }); // ✅ Usa Vue Router
-                    window.location.href = '/vue/dashboard';
+                    window.location.href = '/dashboard';
                 }, 1000);
 
                 // this.disabledButton = false

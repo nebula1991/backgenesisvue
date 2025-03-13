@@ -34,14 +34,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::get('categories/all',[ CategoryController::class,'all'] ); 
-   Route::get('subcategories/all',[ SubcategoryController::class,'all'] );
+Route::get('subcategories/all',[ SubcategoryController::class,'all'] );
  Route::get('products/all',[ ProductController::class,'all'] );
 
-Route::post('products/upload/{product}',[ProductController::class, 'upload']);
+
 
 
 Route::get('suppliers/all',[ SupplierController::class,'all'] );
-Route::resource('suppliers', SupplierController::class)->except('create','edit');
+
 
 
 Route::get('events/all',[ EventController::class,'all'] );
@@ -54,7 +54,9 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
     Route::resource('subcategories', SubcategoryController::class)->except('create','edit');
  
     Route::resource('products', ProductController::class)->except('create','edit');
-   
+    Route::post('products/upload/{product}',[ProductController::class, 'upload']);
+    
+    Route::resource('suppliers', SupplierController::class)->except('create','edit');
    
 });
 
