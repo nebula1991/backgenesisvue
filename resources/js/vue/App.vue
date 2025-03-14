@@ -1,8 +1,63 @@
 <template>
     <v-app>
+      <div style="display: flex; height: 100vh;">
+
+         <!-- Side Navigation Drawer -->
+         <v-navigation-drawer 
+                v-model="drawer"
+                color="#222631" 
+                theme="dark"
+                class="fill-height"
+                permanent
+                width="256"
+                >
+                  <div class="pa-4 d-flex align-center" style="height: 64px; border-bottom: 3px solid rgba(255,255,255,0.12);">
+                    <v-icon icon="mdi-account" class="mr-2"></v-icon>
+                  <div class="text-subtitle-1">Hola {{ user.name }}</div>
+                </div>
+            <v-list>
+
+              <v-list-item to="/dashboard" active-color="indigo-darken-1">
+                <template v-slot:prepend>
+                  <v-icon>mdi-view-dashboard</v-icon>
+                </template>
+                <v-list-item-title>Dashboard</v-list-item-title>
+              </v-list-item>
+      
+              <v-list-item to="/categories" active-color="indigo-darken-1">
+                <template v-slot:prepend>
+                  <v-icon>mdi-shape</v-icon>
+                </template>
+                <v-list-item-title>Categorías</v-list-item-title>
+              </v-list-item>
+      
+              <v-list-item to="/subcategories" active-color="indigo-darken-1">
+                <template v-slot:prepend>
+                  <v-icon>mdi-shape-outline</v-icon>
+                </template>
+                <v-list-item-title>Subcategorías</v-list-item-title>
+              </v-list-item>
+      
+              <v-list-item to="/products" active-color="indigo-darken-1">
+                <template v-slot:prepend>
+                  <v-icon>mdi-package-variant-closed</v-icon>
+                </template>
+                <v-list-item-title>Productos</v-list-item-title>
+              </v-list-item>
+
+              <v-list-item to="/suppliers" active-color="indigo-darken-1">
+                <template v-slot:prepend>
+                  <v-icon>mdi-package-variant-closed</v-icon>
+                </template>
+                <v-list-item-title>Proveedores</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-navigation-drawer>
+
+          <div style="flex-grow: 1; display: flex; flex-direction: column;">
        <!-- Top Navigation Bar -->
-       <v-app-bar color="#263238">
-            <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+       <v-app-bar   color="#white" :elevation="0" height="64"    >
+            <v-app-bar-nav-icon color="black" @click="drawer = !drawer"></v-app-bar-nav-icon>
             <v-spacer></v-spacer>
             <v-toolbar-title class="text-center text-h5">BackGenesis</v-toolbar-title>
             <v-spacer></v-spacer>
@@ -12,7 +67,7 @@
                   <template  v-slot:activator="{ props }">
                     <v-btn icon v-bind="props">
                      
-                        <v-avatar color="grey-darken-1">
+                        <v-avatar color="black">
                              <!-- <v-icon icon="mdi-account"></v-icon> -->
                             <span class="text-h6 text-white">{{ getUserInitials }}</span>
                         </v-avatar>
@@ -44,56 +99,17 @@
                     Iniciar Sesión
                 </v-btn>
             </template>
+
           </v-app-bar>
 
-             <!-- Side Navigation Drawer -->
-             <v-navigation-drawer v-model="drawer" app color="#263238" >
-
-            <v-list>
-
-              <v-list-item to="/dashboard" active-color="primary">
-                <template v-slot:prepend>
-                  <v-icon>mdi-view-dashboard</v-icon>
-                </template>
-                <v-list-item-title>Dashboard</v-list-item-title>
-              </v-list-item>
-      
-              <v-list-item to="/categories" active-color="primary">
-                <template v-slot:prepend>
-                  <v-icon>mdi-shape</v-icon>
-                </template>
-                <v-list-item-title>Categorías</v-list-item-title>
-              </v-list-item>
-      
-              <v-list-item to="/subcategories" active-color="primary">
-                <template v-slot:prepend>
-                  <v-icon>mdi-shape-outline</v-icon>
-                </template>
-                <v-list-item-title>Subcategorías</v-list-item-title>
-              </v-list-item>
-      
-              <v-list-item to="/products" active-color="primary">
-                <template v-slot:prepend>
-                  <v-icon>mdi-package-variant-closed</v-icon>
-                </template>
-                <v-list-item-title>Productos</v-list-item-title>
-              </v-list-item>
-
-              <v-list-item to="/suppliers" active-color="primary">
-                <template v-slot:prepend>
-                  <v-icon>mdi-package-variant-closed</v-icon>
-                </template>
-                <v-list-item-title>Proveedores</v-list-item-title>
-              </v-list-item>
-            </v-list>
-          </v-navigation-drawer>
-
      <!-- Main Content -->
-          <v-main>
+          <v-main class="grey lighten-2">
             <v-container fluid>
               <router-view></router-view>
             </v-container>
           </v-main>
+        </div>
+      </div>
 </v-app>
 </template>
 

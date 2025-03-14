@@ -11,7 +11,7 @@
 
         <div class="mb-5"></div>
 
-        <v-data-table :items="subcategories.data" :headers="headers" :loading="isLoading" class="elevation-1">
+        <v-data-table :items="subcategories.data" :headers="headers" :loading="isLoading" class="elevation-3 rounded-lg bg-grey-lighten-3 text-body-1">
             <template v-slot:item.index="{ index }">
                 {{ (currentPage - 1) * subcategories.per_page + index + 1 }}
             </template>
