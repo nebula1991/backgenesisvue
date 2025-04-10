@@ -4,14 +4,41 @@
         <div class="text-center mb-6">
             <h1 class="text-h4 text-grey-darken-3 text-uppercase">Subcategorias</h1>
         </div>
-        
+
 
         <v-btn color="primary" rounded="lg" prepend-icon="mdi-plus"
             @click="$router.push({ name: 'saveSubcategory' })">Crear</v-btn>
 
         <div class="mb-5"></div>
 
-        <v-data-table :items="subcategories.data" :headers="headers" :loading="isLoading" class="elevation-3 rounded-lg bg-grey-lighten-3 text-body-1">
+        <v-card-title class="d-flex align-center pe-2">
+
+            <v-spacer></v-spacer>
+
+            <v-text-field
+                v-model="search"
+                density="compact"
+                label="Search"
+                prepend-inner-icon="mdi-magnify"
+                variant="solo-filled"
+                flat
+                hide-details
+                single-line
+            ></v-text-field>
+
+        </v-card-title>
+
+
+
+
+        <v-data-table
+            :items="filteredSubcategories"
+            :headers="headers"
+            :loading="isLoading"
+            :items-per-page="subcategories.per_page"
+             hide-default-footer
+            class="elevation-1 force-bold-headers"
+            >
             <template v-slot:item.index="{ index }">
                 {{ (currentPage - 1) * subcategories.per_page + index + 1 }}
             </template>
@@ -34,7 +61,7 @@
 
         <div class="mt-4">
 
-        <v-pagination    
+        <v-pagination
                 v-if="subcategories.data && subcategories.data.length > 0"
                 v-model="currentPage"
                 :length="Math.ceil(subcategories.total / subcategories.per_page)"
@@ -93,13 +120,25 @@ export default {
             isModalActive: false,
             selectedSubcategoryId: null,
             isDeleting: false,
-            showDeleteDialog: false, 
+            showDeleteDialog: false,
             snackbar: {
                     show: false,
                     text: '',
                     color: 'success'
                 },
+            search: '',
 
+        }
+    },
+    computed: {
+        filteredSubcategories(){
+            if(!this.search){
+                return this.subcategories.data; // Si no hay búsqueda, mostrar todos los datos
+            }
+                const searchLower = this.search.toLowerCase();
+                return this.subcategories.data.filter(subcategory => subcategory.name.toLowerCase().includes(searchLower) ||
+                (subcategory.description && subcategory.description.toLowerCase().includes(searchLower))
+            );
         }
     },
     mounted() {

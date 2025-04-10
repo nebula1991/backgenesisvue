@@ -3,9 +3,9 @@
       <div style="display: flex; height: 100vh;">
 
          <!-- Side Navigation Drawer -->
-         <v-navigation-drawer 
+         <v-navigation-drawer
                 v-model="drawer"
-                color="#222631" 
+                color="#222631"
                 theme="dark"
                 class="fill-height"
                 permanent
@@ -23,21 +23,21 @@
                 </template>
                 <v-list-item-title>Dashboard</v-list-item-title>
               </v-list-item>
-      
+
               <v-list-item to="/categories" active-color="indigo-darken-1">
                 <template v-slot:prepend>
                   <v-icon>mdi-shape</v-icon>
                 </template>
                 <v-list-item-title>Categorías</v-list-item-title>
               </v-list-item>
-      
+
               <v-list-item to="/subcategories" active-color="indigo-darken-1">
                 <template v-slot:prepend>
                   <v-icon>mdi-shape-outline</v-icon>
                 </template>
                 <v-list-item-title>Subcategorías</v-list-item-title>
               </v-list-item>
-      
+
               <v-list-item to="/products" active-color="indigo-darken-1">
                 <template v-slot:prepend>
                   <v-icon>mdi-package-variant-closed</v-icon>
@@ -56,17 +56,22 @@
 
           <div style="flex-grow: 1; display: flex; flex-direction: column;">
        <!-- Top Navigation Bar -->
-       <v-app-bar   color="#white" :elevation="0" height="64"    >
-            <v-app-bar-nav-icon color="black" @click="drawer = !drawer"></v-app-bar-nav-icon>
+       <v-app-bar  :elevation="0" height="64"    >
+            <v-app-bar-nav-icon  @click="drawer = !drawer"></v-app-bar-nav-icon>
             <v-spacer></v-spacer>
             <v-toolbar-title class="text-center text-h5">BackGenesis</v-toolbar-title>
             <v-spacer></v-spacer>
+
+            <!-- Botón para alternar el tema -->
+        <v-btn icon @click="toggleTheme">
+            <v-icon>{{ isDarkTheme ? 'mdi-weather-sunny' : 'mdi-weather-night' }}</v-icon>
+        </v-btn>
 
             <template v-if="isLoggedIn">
                  <v-menu location="bottom end">
                   <template  v-slot:activator="{ props }">
                     <v-btn icon v-bind="props">
-                     
+
                         <v-avatar color="black">
                              <!-- <v-icon icon="mdi-account"></v-icon> -->
                             <span class="text-h6 text-white">{{ getUserInitials }}</span>
@@ -103,7 +108,7 @@
           </v-app-bar>
 
      <!-- Main Content -->
-          <v-main class="grey lighten-2">
+          <v-main>
             <v-container fluid>
               <router-view></router-view>
             </v-container>
@@ -153,13 +158,20 @@ export default {
           this.setCookieAuth(null);
       }
     }
+      // Agregar código para cargar preferencia de tema
+    const savedTheme = localStorage.getItem('darkTheme')
+    if (savedTheme !== null) {
+        this.isDarkTheme = savedTheme === 'true'
+        this.updateTheme()
+    }
 
     console.log( this.$cookies.get('auth'))
-   
+
   },
     name: 'App',
     data() {
           return {
+            isDarkTheme: false,
             isLoggedIn: false,
             user: '',
             token: '',
@@ -180,7 +192,7 @@ export default {
                 this.token = null;
             }
         },
-    
+
         logout()
         {
           this.$axios.post('/api/logout', null, {
@@ -199,6 +211,16 @@ export default {
             this.isLoggedIn = false;
             this.$router.push({ name: 'login' });
           })
+        },
+          // Agrega estos nuevos métodos
+        toggleTheme() {
+            this.isDarkTheme = !this.isDarkTheme
+            this.updateTheme()
+            // Guardar preferencia en localStorage
+            localStorage.setItem('darkTheme', this.isDarkTheme)
+        },
+        updateTheme() {
+            this.$vuetify.theme.global.name = this.isDarkTheme ? 'dark' : 'light'
         }
       },
       computed: {
@@ -212,7 +234,7 @@ export default {
                 .substring(0, 2);
         }
     },
- 
+
 }
 </script>
 

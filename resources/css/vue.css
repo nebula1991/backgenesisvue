@@ -1,2 +1,9 @@
 @import "tailwindcss";
 @source "../views";
+
+
+
+.force-bold-headers th {
+  font-weight: bold !important;
+}
+

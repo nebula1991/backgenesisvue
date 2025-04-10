@@ -5,7 +5,7 @@
       </div>
       <v-row>
         <v-col cols="12" sm="6" md="3">
-          <v-card height="100%" class="elevation-3" hover  color="grey-lighten-3" >
+          <v-card height="100%" class="elevation-3" hover  color="grey-lighten-3" to="/categories"  >
             <v-card-title class="d-flex align-center">
               <v-icon size="large" color="indigo-darken-2" class="mr-2">mdi-shape</v-icon>
               Categorías
@@ -14,17 +14,11 @@
               <div class="text-h3 text-center">{{ categories.length }}</div>
               <div class="text-caption text-center text-grey">Total de categorías registradas</div>
             </v-card-text>
-            <v-card-actions>
-              <v-btn block color="indigo-darken-2" variant="text" to="/categories">
-                Ver Categorías
-                <v-icon end>mdi-arrow-right</v-icon>
-              </v-btn>
-            </v-card-actions>
           </v-card>
         </v-col>
-  
+
         <v-col cols="12" sm="6" md="3">
-          <v-card  height="100%" class="elevation-3" hover color="grey-lighten-3">
+          <v-card  height="100%" class="elevation-3" hover color="grey-lighten-3" to="/subcategories">
             <v-card-title class="d-flex align-center">
               <v-icon size="large" color="indigo-darken-2" class="mr-2">mdi-shape-outline</v-icon>
               Subcategorías
@@ -33,17 +27,11 @@
               <div class="text-h3 text-center">{{ subcategories.length }}</div>
               <div class="text-caption text-center text-grey">Total de subcategorías registradas</div>
             </v-card-text>
-            <v-card-actions>
-              <v-btn block color="indigo-darken-2" variant="text" to="subcategories">
-                Ver Subcategorías
-                <v-icon end>mdi-arrow-right</v-icon>
-              </v-btn>
-            </v-card-actions>
           </v-card>
         </v-col>
 
         <v-col cols="12" sm="6" md="3">
-          <v-card  height="100%" class="elevation-3" hover color="grey-lighten-3">
+          <v-card  height="100%" class="elevation-3" hover color="grey-lighten-3" to="/products">
             <v-card-title class="d-flex align-center">
               <v-icon size="large" color="indigo-darken-2" class="mr-2">mdi-package-variant-closed</v-icon>
               Productos
@@ -52,17 +40,11 @@
               <div class="text-h3 text-center">{{ products.length }}</div>
               <div class="text-caption text-center text-grey">Total de productos registrados</div>
             </v-card-text>
-            <v-card-actions>
-              <v-btn block color="indigo-darken-2" variant="text" to="/products">
-                Ver Productos
-                <v-icon end>mdi-arrow-right</v-icon>
-              </v-btn>
-            </v-card-actions>
           </v-card>
         </v-col>
 
         <v-col cols="12" sm="6" md="3">
-          <v-card  height="100%" class="elevation-3" hover color="grey-lighten-3">
+          <v-card  height="100%" class="elevation-3" hover color="grey-lighten-3" to="/suppliers">
             <v-card-title class="d-flex align-center">
               <v-icon size="large" color="indigo-darken-2" class="mr-2">mdi-account-group</v-icon>
               Proveedores
@@ -71,16 +53,10 @@
               <div class="text-h3 text-center">{{ suppliers.length }}</div>
               <div class="text-caption text-center text-grey">Total de proveedores registrados</div>
             </v-card-text>
-            <v-card-actions>
-              <v-btn block color="indigo-darken-2" variant="text" to="/suppliers">
-                Ver Proveedores
-                <v-icon end>mdi-arrow-right</v-icon>
-              </v-btn>
-            </v-card-actions>
           </v-card>
         </v-col>
 
-  
+
       </v-row>
 
 
@@ -136,7 +112,7 @@
       </v-row>
     </div>
   </template>
-  
+
   <script>
   export default {
 
@@ -167,7 +143,7 @@
           this.$axios.get('/api/products/all'),
           this.$axios.get('/api/suppliers/all'),
         ]);
-  
+
         this.categories = categoriesRes.data;
         this.subcategories = subcategoriesRes.data;
         this.products = productsRes.data;
@@ -180,6 +156,6 @@
     mounted() {
       this.loadData();
     }
-    
+
   }
   </script>

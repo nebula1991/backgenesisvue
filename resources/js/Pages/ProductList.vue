@@ -1,34 +1,58 @@
 <template>
     <div class="container mx-auto">
-        
+
         <div class="text-center mb-6">
             <h1 class="text-h4 text-grey-darken-3 text-uppercase">Productos</h1>
         </div>
-       
+
 
         <v-btn color="primary" rounded="lg" prepend-icon="mdi-plus" @click="$router.push({ name: 'saveProduct' })"> Crear
         </v-btn>
 
         <div class="mb-5"></div>
 
+        <v-card-title class="d-flex align-center pe-2">
+
+            <v-spacer></v-spacer>
+
+            <v-text-field
+                v-model="search"
+                density="compact"
+                label="Search"
+                prepend-inner-icon="mdi-magnify"
+                variant="solo-filled"
+                flat
+                hide-details
+                single-line
+            ></v-text-field>
+
+        </v-card-title>
 
         <v-data-table
-            :items="products.data"
+            :items="filteredProducts"
             :headers="headers"
             :loading="isLoading"
-            class="elevation-3 rounded-lg bg-grey-lighten-3 text-body-1"
+            :items-per-page="products.per_page"
+            hide-default-footer
+            class="elevation-1 force-bold-headers"
+
         >
             <template v-slot:item.index="{ index }">
                 {{ (currentPage - 1) * products.per_page + index + 1 }}
             </template>
             <template v-slot:item.stock="{ item }">
-                <span :class="{
-                    'text-success': item.stock > 10,
-                    'text-warning': item.stock > 0 && item.stock <= 10,
-                    'text-error': item.stock === 0
-                }">
-                    {{ item.stock }}
-                </span>
+                <div class="d-flex align-center">
+                    <v-progress-circular
+                        :model-value="getStockPercentage(item)"
+                        :color="getColor(item)"
+                        size="32"
+                        width="4"
+                        class="mr-3"
+                    >
+                        <span class="text-body-2 font-weight-bold">{{ item.stock }}</span>
+                    </v-progress-circular>
+
+                </div>
             </template>
             <template v-slot:item.price="{ item }">
                 {{ item.price }}€
@@ -95,7 +119,7 @@ import DeleteDialog from '../Components/DeleteDialog.vue';
                 },
         data(){
             return{
-              
+
                 headers:[
                     { title: '#', key: 'index', align: 'start', sortable: false },
                     { title: 'NOMBRE', key: 'name' },
@@ -113,22 +137,34 @@ import DeleteDialog from '../Components/DeleteDialog.vue';
                     current_page: 1,
                     last_page: 1,
                 },
-            
+
                 isLoading: true,
                 currentPage:1,
                 showDeleteDialog: false,
                 selectedProductId: null,
                 isDeleting: false,
-                showDeleteDialog: false, 
+                showDeleteDialog: false,
                 snackbar: {
                     show: false,
                     text: '',
                     color: 'success'
                 },
-            
+                search: '',
+
 
             }
         },
+        computed: {
+        filteredProducts(){
+            if(!this.search){
+                return this.products.data; // Si no hay búsqueda, mostrar todos los datos
+            }
+                const searchLower = this.search.toLowerCase();
+                return this.products.data.filter(product => product.name.toLowerCase().includes(searchLower) ||
+                (product.description && product.description.toLowerCase().includes(searchLower))
+            );
+        }
+    },
 
         mounted(){
             this.listPage()
@@ -149,17 +185,28 @@ import DeleteDialog from '../Components/DeleteDialog.vue';
                 }
                     this.isLoading = true;
                         this.$axios.get('/api/products?page='+this.currentPage).then((res) => {
-                            this.products = { 
+                            this.products = {
                                 data: res.data.data,
                                 total: res.data.total,
                                 per_page: res.data.per_page,
                                 current_page: res.data.current_page,
                                 last_page: Math.ceil(res.data.total / res.data.per_page)
-                            } 
+                            }
                             this.isLoading = false;
                         })
-                    },
-                deleteProduct(id){
+                },
+                getStockPercentage(item) {
+                    // Asume que el stock máximo esperado es 50 para la visualización
+                    const maxStock = 50
+                    return Math.min((item.stock / maxStock) * 100, 100)
+                },
+                getColor(item) {
+                    if (item.stock > 10) return 'success'
+                    if (item.stock > 0) return 'warning'
+                    return 'error'
+                },
+
+                            deleteProduct(id){
                         this.selectedProductId = id;
                         this.showDeleteDialog = true;
                         },
@@ -185,9 +232,9 @@ import DeleteDialog from '../Components/DeleteDialog.vue';
                             this.isDeleting = false;
                         }
                     },
-                
+
                 }
             }
-          
-     
+
+
 </script>

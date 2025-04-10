@@ -4,19 +4,44 @@
         <div class="text-center mb-6">
             <h1 class="text-h4 text-grey-darken-3 text-uppercase">Categorias</h1>
         </div>
-      
+
 
         <v-btn color="primary" rounded="lg" prepend-icon="mdi-plus" @click="$router.push({ name: 'saveCategory' })"> Crear
         </v-btn>
-   
+
         <div class="mb-5"></div>
 
- 
+        <v-card-title class="d-flex align-center pe-2">
 
-        <v-data-table :items="categories.data" :headers="headers" :loading="isLoading" class="elevation-3 rounded-lg bg-grey-lighten-3 text-body-1">
+            <v-spacer></v-spacer>
+
+            <v-text-field
+                v-model="search"
+                density="compact"
+                label="Search"
+                prepend-inner-icon="mdi-magnify"
+                variant="solo-filled"
+                flat
+                hide-details
+                single-line
+            ></v-text-field>
+
+        </v-card-title>
+
+        <v-data-table
+            :items="filteredCategories"
+            :headers="headers"
+            :loading="isLoading"
+            :items-per-page="categories.per_page"
+            hide-default-footer
+            class="elevation-1 force-bold-headers"
+            >
+
+
             <template v-slot:item.index="{ index }">
                 {{ (currentPage - 1) * categories.per_page + index + 1 }}
             </template>
+
             <template v-slot:item.actions="{ item }">
                 <div class="d-flex gap-2">
                     <v-btn icon color="warning" size="small"
@@ -52,7 +77,7 @@
         />
 
 
-  
+
     </div>
 </template>
 
@@ -84,13 +109,25 @@ export default {
             currentPage: 1,
             selectedCategoryId: null,
             isDeleting: false,
-            showDeleteDialog: false, 
+            showDeleteDialog: false,
             snackbar: {
                     show: false,
                     text: '',
                     color: 'success'
                 },
+            search: '',
 
+        }
+    },
+    computed: {
+        filteredCategories(){
+            if(!this.search){
+                return this.categories.data; // Si no hay búsqueda, mostrar todos los datos
+            }
+                const searchLower = this.search.toLowerCase();
+                return this.categories.data.filter(category => category.name.toLowerCase().includes(searchLower) ||
+                (category.description && category.description.toLowerCase().includes(searchLower))
+            );
         }
     },
     mounted() {
@@ -108,7 +145,7 @@ export default {
                 Authorization: `Bearer ${this.$root.token}`
             }
             }
-          
+
             this.isLoading = true;
             this.$axios.get('/api/categories?page=' + this.currentPage, config).then((res) => {
                 this.categories = {
@@ -139,7 +176,7 @@ export default {
                     text: 'Categoria eliminada con éxito',
                     color: 'success'
                 };
-                
+
             } catch (error) {
                 console.error('Error al eliminar la categoría:', error);
                 this.snackbar = {
@@ -156,3 +193,7 @@ export default {
     }
 }
 </script>
+
+
+
+

@@ -4,26 +4,51 @@
         <div class="text-center mb-6">
             <h1 class="text-h4 text-grey-darken-3 text-uppercase">Proveedores</h1>
         </div>
-      
+
 
         <v-btn color="primary" rounded="lg" prepend-icon="mdi-plus" @click="$router.push({ name: 'saveSupplier' })"> Crear
-        </v-btn> 
+        </v-btn>
 
-        
+
         <div class="mb-5"></div>
 
- 
+        <v-card-title class="d-flex align-center pe-2">
 
-        <v-data-table :items="suppliers.data" :headers="headers" :loading="isLoading" class="elevation-3 rounded-lg bg-grey-lighten-3 text-body-1">
+            <v-spacer></v-spacer>
+
+            <v-text-field
+                v-model="search"
+                density="compact"
+                label="Search"
+                prepend-inner-icon="mdi-magnify"
+                variant="solo-filled"
+                flat
+                hide-details
+                single-line
+            ></v-text-field>
+
+        </v-card-title>
+
+
+        <v-data-table
+            :items="filteredSuppliers"
+            :headers="headers"
+            :loading="isLoading"
+            :items-per-page="suppliers.per_page"
+            hide-default-footer
+            class="elevation-1 force-bold-headers"
+            >
+
             <template v-slot:item.index="{ index }">
                 {{ (currentPage - 1) * suppliers.per_page + index + 1 }}
             </template>
+
             <template v-slot:item.actions="{ item }">
                 <div class="d-flex gap-2">
                     <v-btn icon color="warning" size="small"
                         @click="$router.push({ name: 'saveSupplier', params: { 'id': item.id } })">
                         <v-icon>mdi-pencil</v-icon>
-                    </v-btn> 
+                    </v-btn>
                    <v-btn icon color="error" size="small" @click="deleteSupplier(item.id)">
                         <v-icon>mdi-delete</v-icon>
                     </v-btn>
@@ -53,7 +78,7 @@
         />
 
 
-  
+
     </div>
 </template>
 
@@ -87,13 +112,25 @@ export default {
             currentPage: 1,
             selectedSupplierId: null,
             isDeleting: false,
-            showDeleteDialog: false, 
+            showDeleteDialog: false,
             snackbar: {
                     show: false,
                     text: '',
                     color: 'success'
                 },
+            search: '',
 
+        }
+    },
+    computed: {
+        filteredSuppliers(){
+            if(!this.search){
+                return this.suppliers.data; // Si no hay búsqueda, mostrar todos los datos
+            }
+                const searchLower = this.search.toLowerCase();
+                return this.suppliers.data.filter(supplier => supplier.name.toLowerCase().includes(searchLower) ||
+                (supplier.description && supplier.description.toLowerCase().includes(searchLower))
+            );
         }
     },
     mounted() {
@@ -111,7 +148,7 @@ export default {
                 Authorization: `Bearer ${this.$root.token}`
             }
             }
-          
+
             this.isLoading = true;
             this.$axios.get('/api/suppliers?page=' + this.currentPage, config).then((res) => {
                 this.suppliers = {
@@ -142,7 +179,7 @@ export default {
                     text: 'Proveedor eliminado con éxito',
                     color: 'success'
                 };
-                
+
             } catch (error) {
                 console.error('Error al eliminar el proveedor:', error);
                 this.snackbar = {
